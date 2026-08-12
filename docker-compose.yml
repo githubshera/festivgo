@@ -1,0 +1,28 @@
+#services:
+#  mysql:
+#    image: mysql:8.0
+#    container_name: festivGo-mysql-db
+#    environment:
+#      MYSQL_ROOT_PASSWORD: rootpassword
+#      MYSQL_DATABASE: FestivGo
+#      MYSQL_USER: festiveGo_user
+#      MYSQL_PASSWORD: festivGo_admin
+#    ports:
+#      - "3307:3306"
+#    volumes:
+#      - mysql_data:/var/lib/mysql
+#
+#  springboot-app:
+#    build: .
+#    container_name: festivGo-app
+#    depends_on:
+#      - mysql
+#    environment:
+#      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/FestivGo
+#      SPRING_DATASOURCE_USERNAME: festiveGo_user
+#      SPRING_DATASOURCE_PASSWORD: festivGo_admin
+#    ports:
+#      - "8080:8080"
+#
+#volumes:
+#  mysql_data:
