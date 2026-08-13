@@ -10,28 +10,26 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/user/v1")
 public class UserController {
+    
     @Autowired
     private UserService userService;
-
-    // Post http://localhost:8080/user/v1/create
+    
     @PostMapping("/create")
     public ResponseEntity<User> createUser(@RequestBody User user) {
         User saveUser = userService.createuser(user);
         return new ResponseEntity<>(saveUser, HttpStatus.CREATED);
     }
-   // GET http://localhost:8080/user/v1/{phone}
+   
     @GetMapping("/{phone}")
     public ResponseEntity<User> getUser(@PathVariable String phone) {
         return  new ResponseEntity<>(userService.getUserByPhone(phone), HttpStatus.OK);
     }
 
-  //  PUT http://localhost:8080/user/v1/{phone}
     @PutMapping("/{phone}")
     public ResponseEntity<User> updateUser(@PathVariable String phone, @RequestBody User user) {
         return new ResponseEntity<>(userService.updateUser(phone, user), HttpStatus.OK);
     }
 
-   // DELETE http://localhost:8080/user/v1/{phone}
     @DeleteMapping("/{phone}")
     public ResponseEntity<Void> deleteUser(@PathVariable String phone) {
         userService.deleteUserByPhone(phone);
