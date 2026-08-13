@@ -1,4 +1,5 @@
 package com.festivGo.constants;
 
-public class Constant {
+public enum Constant {
+
 }

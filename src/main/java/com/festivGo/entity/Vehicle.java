@@ -10,9 +10,9 @@ public class Vehicle {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long vehicleId;
-
     private String vehicleType;
     private int capacity;
     private double farePerKm;
+    private String vehicleNo;
     private boolean availability;
 }

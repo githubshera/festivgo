@@ -12,10 +12,6 @@
 #    volumes:
 #      - mysql_data:/var/lib/mysql
 #
-#  springboot-app:
-#    build: .
-#    container_name: festivGo-app
-#    depends_on:
 #      - mysql
 #    environment:
 #      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/FestivGo
@@ -26,3 +22,7 @@
 #
 #volumes:
 #  mysql_data:
+#  springboot-app:
+#    build: .
+#    container_name: festivGo-app
+#    depends_on:

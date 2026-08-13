@@ -3,43 +3,38 @@ package com.festivGo.controller;
 import com.festivGo.entity.User;
 import com.festivGo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.text.html.Option;
-import java.util.Optional;
-
 @RestController
 @RequestMapping("/user/v1")
-public class UserCcontroller {
+public class UserController {
     @Autowired
     private UserService userService;
 
-    //post method
+    // Post http://localhost:8080/user/v1/create
     @PostMapping("/create")
     public ResponseEntity<User> createUser(@RequestBody User user) {
         User saveUser = userService.createuser(user);
         return new ResponseEntity<>(saveUser, HttpStatus.CREATED);
     }
-   // GET http://localhost:8080/users/{phone}
+   // GET http://localhost:8080/user/v1/{phone}
     @GetMapping("/{phone}")
-    public ResponseEntity<Optional<User>> getUser(@PathVariable String phone) {
-        return  new ResponseEntity<>(userService.getUserByPhone(phone), HttpStatus.FOUND);
+    public ResponseEntity<User> getUser(@PathVariable String phone) {
+        return  new ResponseEntity<>(userService.getUserByPhone(phone), HttpStatus.OK);
     }
 
-  //  PUT http://localhost:8080/users/{phone}
-
+  //  PUT http://localhost:8080/user/v1/{phone}
     @PutMapping("/{phone}")
     public ResponseEntity<User> updateUser(@PathVariable String phone, @RequestBody User user) {
-        //get the user
         return new ResponseEntity<>(userService.updateUser(phone, user), HttpStatus.OK);
     }
 
-   // DELETE http://localhost:8080/users/{phone}
+   // DELETE http://localhost:8080/user/v1/{phone}
     @DeleteMapping("/{phone}")
-    public void deleteUser(@PathVariable String phone) {
+    public ResponseEntity<Void> deleteUser(@PathVariable String phone) {
         userService.deleteUserByPhone(phone);
+        return  new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
