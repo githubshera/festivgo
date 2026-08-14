@@ -25,4 +25,6 @@ public class Booking {
     private String eventType;   // Wedding, Puja, Reception, etc.
     private LocalDate eventDate;
     private String status;      // PENDING, CONFIRMED, CANCELLED
+    private double fare;
+    private double distance;
 }
