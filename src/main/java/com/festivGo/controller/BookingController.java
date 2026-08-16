@@ -24,6 +24,8 @@ public class BookingController {
                 bookingRequest.getVehicleNo(),
                 bookingRequest.getPhone(),
                 bookingRequest.getEventType(),
+                bookingRequest.getStartDate(),
+                bookingRequest.getEndDate(),
                 bookingRequest.getDistance()
         );
        return new ResponseEntity<>(booking, HttpStatus.CREATED);
@@ -54,6 +56,8 @@ public class BookingController {
           Booking booking = bookingService.updateBooking(
                    bookingId,
                    bookingRequest.getEventType(),
+                   bookingRequest.getStartDate(),
+                   bookingRequest.getEndDate(),
                    bookingRequest.getDistance(),
                    bookingRequest.getVehicleNo());
           return new ResponseEntity<>(booking, HttpStatus.OK);

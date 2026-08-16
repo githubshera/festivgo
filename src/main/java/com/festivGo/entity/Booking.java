@@ -2,8 +2,7 @@ package com.festivGo.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
-
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "bookings")
@@ -23,7 +22,8 @@ public class Booking {
     private Vehicle vehicle;
 
     private String eventType;   // Wedding, Puja, Reception, etc.
-    private LocalDate eventDate;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
     private String status;      // PENDING, CONFIRMED, CANCELLED
     private double fare;
     private double distance;

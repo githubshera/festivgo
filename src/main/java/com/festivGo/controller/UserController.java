@@ -1,5 +1,6 @@
 package com.festivGo.controller;
 
+import com.festivGo.dto.UserRequest;
 import com.festivGo.entity.User;
 import com.festivGo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,11 @@ public class UserController {
     private UserService userService;
     
     @PostMapping("/create")
-    public ResponseEntity<User> createUser(@RequestBody User user) {
+    public ResponseEntity<User> createUser(@RequestBody UserRequest userRequest) {
+        User user = new User();
+        user.setName(userRequest.getName());
+        user.setPhone(userRequest.getPhone());
+        user.setRole(userRequest.getRole());
         User saveUser = userService.createuser(user);
         return new ResponseEntity<>(saveUser, HttpStatus.CREATED);
     }

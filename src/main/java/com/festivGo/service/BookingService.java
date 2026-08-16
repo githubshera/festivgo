@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
@@ -27,7 +28,7 @@ public class BookingService {
     @Autowired
     UserRepository userRepository;
 
-    public Booking createBooking(String vehicleNo, String phone, String eventType, double distance) {
+    public Booking createBooking(String vehicleNo, String phone, String eventType, LocalDateTime startDate, LocalDateTime endDate, double distance) {
         Vehicle vehicle = vehicleRepository.findByVehicleNo(vehicleNo);
         User userExist = userRepository.findByPhone(phone);
         if(vehicle == null || !vehicle.isAvailability()) {
@@ -40,7 +41,8 @@ public class BookingService {
        double fare = distance * vehicle.getFarePerKm();
        Booking booking = new Booking();
        booking.setUser(userExist);
-       booking.setEventDate(LocalDate.now());
+       booking.setStartTime(startDate);
+       booking.setEndTime(endDate);
        booking.setStatus(String.valueOf(Constant.CONFIRM));
        booking.setEventType(eventType);
        booking.setFare(fare);
@@ -49,6 +51,8 @@ public class BookingService {
        vehicle.setAvailability(false);
         System.out.println("before vehicle saving" + vehicle);
        vehicleRepository.save(vehicle);
+        System.out.println("start date:====> " + booking.getStartTime());
+        System.out.println("end date:====> " +booking.getEndTime());
         return  bookingRepository.save(booking);
     }
 
@@ -77,13 +81,18 @@ public class BookingService {
         return  booking;
     }
 
-    public Booking updateBooking(long bookingId, String eventType, double distance, String vehicleNo) {
+    public Booking updateBooking(long bookingId, String eventType, LocalDateTime startDate, LocalDateTime endDate, double distance, String vehicleNo) {
         Booking booking = bookingRepository.findById(bookingId).orElseThrow(() -> new IllegalArgumentException("no booking found " + bookingId));
         // check vehicle changed or not
         if (vehicleNo != null && !vehicleNo.equals(booking.getVehicle().getVehicleNo())) {
             Vehicle newVehicle = vehicleRepository.findByVehicleNo(vehicleNo);
             if (newVehicle == null || !newVehicle.isAvailability()) {
                 throw new IllegalArgumentException("vehicle not available " + vehicleNo);
+            }
+
+            List<Booking> conflicts = bookingRepository.findConflictingBookings(vehicleNo, booking.getStartTime(), booking.getEndTime());
+            if(!conflicts.isEmpty()) {
+                throw new IllegalArgumentException("vehicle " + vehicleNo + " is already booked at time time");
             }
             // free old vehicle
             booking.getVehicle().setAvailability(true);
@@ -98,10 +107,19 @@ public class BookingService {
         if (eventType != null) {
             booking.setEventType(eventType);
         }
+
+        if(startDate != null) {
+            booking.setStartTime(startDate);
+        }
+        if(endDate != null) {
+            booking.setEndTime(endDate);
+        }
+
         if (distance > 0) {
             booking.setDistance(distance);
             booking.setFare(distance * booking.getVehicle().getFarePerKm());
         }
+
         return bookingRepository.save(booking);
     }
 
@@ -115,7 +133,7 @@ public class BookingService {
 
     public void deleteByBookingId(Long id) {
         if(!bookingRepository.existsById(id)) {
-            throw new IllegalArgumentException("not found by id " + id);
+            throw new IllegalArgumentException("not found by id: " + id);
         }
         bookingRepository.deleteById(id);
     }

@@ -1,5 +1,6 @@
 package com.festivGo.controller;
 
+import com.festivGo.dto.VehicleRequest;
 import com.festivGo.entity.Vehicle;
 import com.festivGo.service.VehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +18,15 @@ public class VehicleController {
     private VehicleService vehicleService;
 
     @PostMapping("/create/vehicle")
-    public ResponseEntity<Vehicle> createVehicle(@RequestBody Vehicle vehicle) {
+    public ResponseEntity<Vehicle> createVehicle(@RequestBody VehicleRequest vehicleRequest) {
+        Vehicle vehicle = new Vehicle();
+        vehicle.setVehicleNo(vehicleRequest.getVehicleNo());
+        vehicle.setVehicleType(vehicleRequest.getVehicleType());
+        vehicle.setCapacity(vehicleRequest.getCapacity());
+        vehicle.setFarePerKm(vehicleRequest.getFarePerKm());
+        vehicle.setAvailability(vehicleRequest.isAvailability());
         Vehicle saveVehicle = vehicleService.createVehicle(vehicle);
+
         return new ResponseEntity<>(saveVehicle, HttpStatus.CREATED);
     }
 
