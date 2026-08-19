@@ -31,8 +31,8 @@ public class UserController {
     }
 
     @PutMapping("/{phone}")
-    public ResponseEntity<User> updateUser(@PathVariable String phone, @RequestBody User user) {
-        return new ResponseEntity<>(userService.updateUser(phone, user), HttpStatus.OK);
+    public ResponseEntity<User> updateUser(@PathVariable String phone, @RequestBody UserRequest userRequest) {
+        return new ResponseEntity<>(userService.updateUser(phone, userRequest), HttpStatus.OK);
     }
 
     @DeleteMapping("/{phone}")

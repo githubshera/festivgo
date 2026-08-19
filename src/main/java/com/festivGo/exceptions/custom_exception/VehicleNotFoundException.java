@@ -1,7 +1,7 @@
 package com.festivGo.exceptions.custom_exception;
 
-public class UserNotFoundException extends RuntimeException {
-    public UserNotFoundException(String phone) {
-        super("user not found with this phone no: " + phone);
+public class VehicleNotFoundException extends RuntimeException {
+    public VehicleNotFoundException(String vehicleNo) {
+        super("vehicle not found with this vehicle no: " + vehicleNo);
     }
 }

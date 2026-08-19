@@ -1,6 +1,8 @@
 package com.festivGo.service;
 
 import com.festivGo.entity.Vehicle;
+import com.festivGo.exceptions.custom_exception.VehicleAlreadyExistsException;
+import com.festivGo.exceptions.custom_exception.VehicleNotFoundException;
 import com.festivGo.repository.VehicleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,7 +17,7 @@ public class VehicleService {
 
     public Vehicle createVehicle(Vehicle vehicle) {
         if(vehicleRepository.existsByVehicleNo(vehicle.getVehicleNo())) {
-          throw new IllegalArgumentException(" vehicle already exist: " + vehicle.getVehicleNo());
+          throw new VehicleAlreadyExistsException(vehicle.getVehicleNo());
         }
         return vehicleRepository.save(vehicle);
     }
@@ -23,7 +25,7 @@ public class VehicleService {
   public Vehicle getVehicleByNo(String vehicleNo) {
        Vehicle vehicle =  vehicleRepository.findByVehicleNo(vehicleNo);
        if(vehicle == null) {
-           throw new IllegalArgumentException("in getVehicleByNo method- no vehicle is found: " + vehicleNo);
+           throw new VehicleNotFoundException(vehicleNo);
        }
        return vehicle;
   }
@@ -35,7 +37,7 @@ public class VehicleService {
     public  Vehicle updateAvailability(String vehicleNo, boolean availability) {
         Vehicle updateVehicle = vehicleRepository.findByVehicleNo(vehicleNo);
         if(updateVehicle == null) {
-            throw new IllegalArgumentException("no vehicle is found: " + vehicleNo);
+            throw new VehicleNotFoundException(vehicleNo);
         }
         updateVehicle.setAvailability(availability);
         return vehicleRepository.save(updateVehicle);
@@ -44,7 +46,7 @@ public class VehicleService {
     public  void deleteVehicle(String vehicleNo) {
         Vehicle existVehicle = vehicleRepository.findByVehicleNo(vehicleNo);
         if(existVehicle == null) {
-            throw new IllegalArgumentException("vehicle is not present with this no: " + vehicleNo);
+            throw new VehicleNotFoundException(vehicleNo);
         }
         vehicleRepository.delete(existVehicle);
     }
