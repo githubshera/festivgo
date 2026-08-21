@@ -1,10 +1,6 @@
 package com.festivGo.exceptions;
 
-import com.festivGo.exceptions.custom_exception.UserAlreadyExistsException;
-import com.festivGo.exceptions.custom_exception.UserNotFoundException;
-import com.festivGo.exceptions.custom_exception.VehicleAlreadyExistsException;
-import com.festivGo.exceptions.custom_exception.VehicleNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.festivGo.exceptions.custom_exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -37,6 +33,37 @@ public class GLobalExceptionHandler {
         return buildResponse(HttpStatus.NOT_FOUND, e.getMessage());
     }
 
+
+    @ExceptionHandler(VehicleNotAvailableException.class)
+    public ResponseEntity<Map<String, Object>>  handleVehicleNotAvailableException(VehicleNotAvailableException e) {
+        return buildResponse(HttpStatus.NOT_FOUND, e.getMessage());
+    }
+
+    @ExceptionHandler(VehicleAlreadyBookedException.class)
+    public ResponseEntity<Map<String, Object>>  handleVehicleAlreadyBookedException(VehicleAlreadyBookedException e) {
+        return buildResponse(HttpStatus.NOT_FOUND, e.getMessage());
+    }
+
+    @ExceptionHandler(BookingNotFoundByUserException.class)
+    public ResponseEntity<Map<String, Object>>  handleBookingNotFoundByUserException(BookingNotFoundByUserException e) {
+        return buildResponse(HttpStatus.NOT_FOUND, e.getMessage());
+    }
+
+    @ExceptionHandler(BookingNotFoundByStatusException.class)
+    public ResponseEntity<Map<String, Object>>  handleBookingNotFoundByStatusException(BookingNotFoundByStatusException e) {
+        return buildResponse(HttpStatus.NOT_FOUND, e.getMessage());
+    }
+
+    @ExceptionHandler(BookingNotFoundByIdException.class)
+    public ResponseEntity<Map<String, Object>>  handleBookingNotFoundByIdException(BookingNotFoundByIdException e) {
+        return buildResponse(HttpStatus.NOT_FOUND, e.getMessage());
+    }
+
+    @ExceptionHandler(BookingNotFoundByEventTypeException.class)
+    public ResponseEntity<Map<String, Object>>  handleBookingNotFoundByEventTypeException(BookingNotFoundByEventTypeException e) {
+        return buildResponse(HttpStatus.NOT_FOUND, e.getMessage());
+    }
+
     private ResponseEntity<Map<String, Object>> buildResponse(HttpStatus status, String message) {
         Map<String, Object> body = new HashMap<>();
         body.put("status", status.value());
@@ -45,6 +72,4 @@ public class GLobalExceptionHandler {
         body.put("timestamp", LocalDateTime.now());
         return new ResponseEntity<>(body, status);
     }
-
-
 }
